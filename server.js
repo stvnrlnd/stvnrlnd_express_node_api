@@ -15,7 +15,14 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 
 // ------ Build the routes
+api.route('/')
+.get(function(req, res) {
+    res.json({
+        "message": "Hello, beautiful!"
+    });
+});
 
+server.use('/api', api);
 
 // ------ Serve the public
 server.listen(port, function() {
