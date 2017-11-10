@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 
 // ------ Configure the application
 var port = process.env.PORT || 8080;
+var User = require('./server_resources/models');
 
 var server = express();
 var api = express.Router();
@@ -42,6 +43,44 @@ api.route('/users')
                 res.send(err);
             } else {
                 res.json(users);
+            }
+        });
+    });
+
+api.route('/users/:user_id')
+    .get(function(req, res) { // Return a single user
+        User.findById(req.params.user_id, function(err, user) {
+            if (err){
+                res.send(err);
+            } else {
+                res.json(user);
+            }
+        });
+    })
+    .put(function(req, res) { // Update a single user
+        User.findById(req.params.user_id, function(err, user) {
+            if (err){
+                res.send(err);
+            } else {
+                user.name = req.body.name;
+                user.save(function(err) {
+                    if (err){
+                        res.send(err);
+                    } else {
+                        res.json({ message: 'User updated!' });
+                    }
+                });
+            }
+        });
+    })
+    .delete(function(req, res) { // Remove a single user
+        User.remove({
+            _id: req.params.user_id
+        }, function(err, user) {
+            if (err){
+                res.send(err);
+            } else {
+                res.json({ message: 'Successfully deleted' });
             }
         });
     });
