@@ -11,6 +11,8 @@ var port = process.env.PORT || 8080;
 var server = express();
 var api = express.Router();
 
+mongoose.connect('mongodb://localhost:27017/stvnrlnd_express_node_api');
+
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 
